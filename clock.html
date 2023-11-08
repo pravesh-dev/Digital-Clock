@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            cursor: default;
+        }
+        body{
+            width: 100%;
+            height: 100vh;
+            box-sizing: border-box;
+            background: #0a001a;
+            /* background: #2f0079; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #container{
+            width: 26vw;
+            height: 13vh;
+            /* background: linear-gradient(#000, #151515); */
+            background: #000;
+            border-radius: 10px;
+            box-shadow: inset 1px 1px 5px white, inset -2px -2px 5px #565656;
+            display: flex;
+            gap: 0.7vw; 
+            align-items: center;
+            justify-content: center;
+        }
+        .time{
+            color: cyan;
+            font-size: 3vw;
+            font-weight: 900;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            background: #57474731;
+            border-radius: 5px;
+            padding: 0 0.5vw;
+        }
+        .time:hover{
+            transform: scale(1.2);
+            transition: transform 0.5s;
+        }
+        .time_space{
+            font-size: 3vw;
+            color: white;
+        }
+        #ampm_container{
+            width: 10vw;
+            height: 13vh;
+            background: #000;
+            border-radius: 10px;
+            box-shadow: inset 1px 1px 5px white, inset -2px -2px 5px #565656;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 1vw;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="time" id="hour"></div>
+        <div class="time_space">:</div>
+        <div class="time" id="minute"></div>
+        <div class="time_space">:</div>
+        <div class="time" id="second"></div>
+    </div>
+    <div id="ampm_container">
+        <div class="time" id="ampm"></div>
+    </div>
+
+    <script>
+        let hour = document.getElementById("hour");
+        let minute = document.getElementById("minute");
+        let second = document.getElementById("second");
+        let ampm = document.getElementById("ampm");
+        let updateTime = ()=>{
+            let date = new Date();
+            let getHour = date.getHours();
+            let getMinutes = date.getMinutes();
+            let getSeconds = date.getSeconds();
+            let amPm = getHour >= 12 ? 'PM' : 'AM';
+            
+            getHour = (getHour % 12) || 12;
+
+            getHour = getHour.toString().padStart(2, '0');
+            getMinutes = getMinutes.toString().padStart(2, '0');
+            getSeconds = getSeconds.toString().padStart(2, '0');
+            second.innerHTML = getSeconds;
+
+            if(getSeconds === 59){
+                getSeconds = 0;
+                if(getMinutes === 59){
+                    getMinutes = 0;
+                    getHour = (getHour + 1) % 12;
+                }
+                else{
+                    getMinutes++;
+                }
+            }
+            else {
+                getSeconds++;
+            }
+
+            hour.innerHTML = getHour;
+            minute.innerHTML = getMinutes;
+            ampm.innerHTML = amPm;
+        };
+
+        updateTime();
+
+        let secondsNow = setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>
